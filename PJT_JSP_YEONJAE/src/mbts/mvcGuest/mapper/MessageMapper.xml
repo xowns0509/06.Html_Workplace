@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE mapper     PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"     "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="mbts.mvcGuest.mapper.MessageMapper">
+
+	<resultMap type="message" id="messageMap">
+		<result column="message_id" property="messageId"/>
+		<result column="guest_name" property="guestName"/>
+		<result column="password" property="password"/>
+		<result column="message" property="message"/>
+	</resultMap>
+
+	<!-- 방명록 리스트 -->
+	<select id="listMessage" resultMap="messageMap"> 
+		select * from guestTB order by message_id desc
+	</select>
+	
+	<!-- 방명록 입력 -->
+	<insert id="saveMessage" parameterType="message">
+		insert into guestTB (message_id, guest_name, password, message)
+		values (seq_gst_msg.nextval, #{guestName}, #{password}, #{message})
+	</insert>
+	
+	<!-- 방명록 삭제 -->
+	<delete id="deleteMessage" parameterType="message">
+		delete from guestTB where message_id = #{messageId} and password = #{password}
+	</delete>
+	
+</mapper> 

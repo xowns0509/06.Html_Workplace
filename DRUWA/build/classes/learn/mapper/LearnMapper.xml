@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="mybaits.mapper.LearnMapper">
+	<resultMap type="learn" id="LearnMap">
+		<id column="le_num" property="leNum" />	
+		<result column="le_pass" property="lePass" />	
+		<result column="le_title" property="leTitle" />	
+		<result column="le_type" property="leType" />	
+		<result column="le_time" property="leTime" />	
+		<result column="le_content" property="leContent" />	
+		<result column="le_count" property="leCount" />	
+		<result column="id" property="id" />	
+	</resultMap>
+
+
+	<!-- 리스트 -->
+	<select id="listComment" resultMap="LearnMap">
+		SELECT * FROM learn order by le_num desc
+	</select>
+	
+	<!-- 글쓰기 -->
+	<insert id="insertComment" parameterType="learn">
+		INSERT INTO learn(le_num,id,le_pass,le_type,le_title,le_time,le_content)
+		values(learn_seq.nextval,#{id},#{lePass},#{leType},#{leTitle},sysdate,#{leContent})
+	</insert>
+	
+	<!-- 상세보기 -->
+	<select id="viewComment" resultMap="LearnMap" parameterType="int">
+		SELECT * FROM learn where le_num=#{leNum}
+	</select>
+	
+	<!-- 수정전 비밀번호 확인 -->
+	<select id="viewPassComment" resultMap="LearnMap" parameterType="learn">
+		SELECT * FROM learn where le_num=#{leNum} and le_pass=#{lePass}
+	</select>
+	
+	<!-- 수정하기 -->
+	<update id="updateComment" parameterType="learn">
+		UPDATE learn SET le_title=#{leTitle},le_type=#{leType},le_content=#{leContent},le_time=sysdate WHERE le_num=#{leNum} 
+	</update>
+	
+	<!-- 삭제하기 -->
+	<delete id="deleteComment" parameterType="learn">
+		DELETE FROM learn WHERE le_num=#{leNum} and le_pass=#{lePass}
+	</delete>	
+	
+	<update id="increaseCount" parameterType="int">
+		UPDATE learn SET le_count=le_count+1 WHERE le_num=#{leNum}
+	</update>
+	
+	<!-- 메인화면에 보여줄 내용 -->
+	<select id="listMainView" resultMap="LearnMap" parameterType="string">
+		select * from learn where id='8888';
+	</select>
+</mapper>

@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>Insert title here</title>
+<script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?sensor=true"></script>
+<!-- 구글맵에서 재공해주는 src. 이렇게 자바스크립트 형식으로 라이브러리를 주면 우리가 갖다 쓰는 거지. -->
+<script type="text/javascript">
+	var map = null;
+	window.onload = function() {
+		// 1. window.onload 했을 때
+		getLocation();
+		// getLocation()함수부름.
+		// 맨 아래 function getLocation()로 이동.
+		
+		// 3. 다시 올라와서
+		var opt = {
+			// opt라는... 클래스네.
+			center : new google.maps.LatLng(37.56621, 126.9779),// 변수명에다가 값,
+			zoom : 15,// 변수명에다가 값,
+			mapTypeId : google.maps.MapTypeId.ROADMAP// 변수명에다가 값. 이렇게 지정해서 저장해주고
+		};
+		
+		// 그리고 나서 map이란 객체를 생성한다는 데, 뭘 넣냐면
+		// document.getElementById("map")으로 밑에 map이란 id 지정해 둔 div와 opt,
+		// 이렇게 인자 2개만 넣어주면 알아서 보여주겠다고. 구글 맵을
+		map = new google.maps.Map(document.getElementById("map"), opt);
+
+	}
+
+	// 이건 언제 부를 까. 구글에다 객체를 생성해서 넘기면
+	// 그쪽에서 이 함수를 불러준다는 의미인 듯
+	function showLocation(position) {
+		var latitude = position.coords.latitude;
+		var longitude = position.coords.longitude;
+		alert("Latitude : " + latitude + " Longitude: " + longitude);
+		var hear = new google.maps.LatLng(latitude, longitude);
+		map.panTo(new google.maps.LatLng(latitude, longitude));
+		var marker = new google.maps.Marker({
+			position : hear,
+			title : "I'm hear!"
+		});
+		marker.setMap(map);
+	}
+	
+	
+	function errorHandler(err) {
+		if (err.code == 1) {
+			alert("Error: Access is denied!");
+		} else if (err.code == 2) {
+			alert("Error: Position is unavailable!");
+		} else if (err.code == 3) {
+			alert("Erro : Time out");
+		}
+	}
+	
+	// 2. getLocation() 기술.
+	function getLocation() {
+		
+		if (navigator.geolocation) {
+			// navigator.geolocation라는 요소가 있다는데 그게 있으면
+			var options = {
+				timeout : 60000,// 타임아웃을 60초로 지정(단위는 밀리세컨드)
+				enabledHighAccuracy : true
+			};
+			navigator.geolocation.getCurrentPosition(showLocation,
+					errorHandler, options);
+			// 그리곤 구글이 만든 위의 함수, navigator.geolocation.getCurrentPosition()를
+			// 부르기만 하면 된다 이거지
+			
+		} else {
+			alert("Sorry, browser does not support geolocation!");
+			// 위의 avigator.geolocation라는 요소가 없다면
+			// '당신의 브라우저는 이거 지원하지 않습니다...' 라고 뜨는거고
+			// 다시 위로.
+		}
+	}
+</script>
+</head>
+<body>
+  <div id="map" style="width: 800px;
+	height: 600px"></div>
+</body>
+</html>

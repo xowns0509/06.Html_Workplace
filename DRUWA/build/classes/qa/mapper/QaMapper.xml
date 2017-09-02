@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="UTF-8" ?>   
+<!DOCTYPE mapper     PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"     "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="mybatis.mapper.QaMapper">
+	<select id="selectList" parameterType="map" resultType="qa.model.Qa">
+		select
+		QA_NUM as qaNum,
+		QA_TYPE as qaType,
+		QA_TITLE as qaSubject,
+		QA_CONTENT as qaContent,
+		QA_PASS as qaPass,
+		QA_TIME as qaTime,
+		QA_COUNT as qaCount,
+		ID as id
+		from qa
+		<if test="search != null and search !=''">
+			where QA_TYPE = #{job, jdbcType=VARCHAR}
+			AND QA_CONTENT like '%' || #{search, jdbcType=VARCHAR} || '%'
+		</if>
+		order by qaNum desc
+	</select>
+
+	<select id="selectQaCount" parameterType="map" resultType="int">
+		select
+		count(*)
+		from qa
+		<if test="search != null and search !=''">
+         where QA_TYPE = #{job, jdbcType=VARCHAR}
+         AND QA_CONTENT like '%' || #{search, jdbcType=VARCHAR} || '%'
+      </if>
+	</select>
+
+	<select id="selectByQaNum" parameterType="int" resultType="qa.model.Qa">
+		select
+		QA_NUM as qaNum,
+		QA_TYPE as qaType,
+		QA_TITLE as qaSubject,
+		QA_CONTENT as qaContent,
+		QA_PASS as qaPass,
+		QA_TIME as qaTime,
+		QA_COUNT as qaCount,
+		ID as id
+		from qa
+		where QA_NUM = #{qaNum}
+	</select>
+
+	<insert id="insert" parameterType="qa.model.Qa">
+		insert into qa values(
+		QA_NUM.nextval,
+		#{qaPass},
+		#{qaSubject},
+		#{qaType},
+		sysdate,
+		#{qaContent},
+		0,
+		#{id}
+		)
+	</insert>
+
+	<update id="update" parameterType="qa.model.Qa">
+		update qa set QA_TIME=sysdate, QA_CONTENT=#{qaContent} where QA_NUM=#{qaNum}
+	</update>
+
+	<delete id="delete" parameterType="int">
+		delete from qa where QA_NUM=#{qaNum}
+	</delete>
+
+	<delete id="deleteReple" parameterType="int">
+		delete from qa_re where QA_NUM=#{qaNum}
+	</delete>
+
+	<select id="selectRepleList" parameterType="int" resultType="qa.model.RepleVo">
+		select * from
+		qa_re
+		where QA_NUM = #{qaNum}
+		<!-- order by qa_re_num desc -->
+
+	</select>
+
+
+	<insert id="insertReple" parameterType="qa.model.RepleVo">
+		insert into qa_re
+		values(qareseq.nextval,#{qaNum},#{qaReContent},#{id},sysdate)
+
+
+	</insert>
+
+
+
+	<select id="selectShList" resultType="qa.model.Sh">
+		select * from shouting
+		order by sh_Num desc
+	</select>
+
+	<insert id="insertsh" parameterType="qa.model.Sh">
+		insert into shouting
+		values(shoutingseq.nextval,#{nick},#{shContent},sysdate, 0)
+	</insert>
+
+
+
+
+
+	<update id="increaseCount" parameterType="int">
+		UPDATE qa SET qa_count=qa_count+1 WHERE qa_num=#{qaNum}
+	</update>
+
+	<!-- 추천...ㅅㅂ -->
+
+
+	<select id="upCount" parameterType="java.lang.String"
+		resultType="int">
+		select count(*) from SHOUTING2 where shseq = #{shseq}
+	</select>
+
+	<select id="upCheck" parameterType="qa.model.Sh2" resultType="int">
+		select count(*) from SHOUTING2 where shseq = #{shseq} and id=#{id}
+	</select>
+	<insert id="insertup" parameterType="qa.model.Sh2">
+		insert into SHOUTING2 values( shouting2seq.nextval, #{id}, #{shseq})
+	</insert>
+
+	<update id="upUpdate" parameterType="qa.model.Sh2">
+		update SHOUTING set sh_rate=#{upCount} where sh_num=#{shseq}
+	</update>
+
+
+
+	<select id="mainQa" resultType="qa.model.Qa">
+
+		select QA_NUM, QA_PASS, QA_TITLE as QaSubject, QA_TYPE, QA_TIME, QA_CONTENT,
+		QA_COUNT, ID
+		from (select QA_NUM, QA_PASS, QA_TITLE, QA_TYPE, QA_TIME, QA_CONTENT,
+		QA_COUNT, ID, RANK() OVER(ORDER BY QA_NUM DESC) as rank FROM qa)
+		where rank between 1 and 5
+
+
+	</select>
+
+	<select id="mainSh" resultType="qa.model.Sh">
+
+		select *
+		from (select SH_NUM,SH_CONTENT, SH_TIME, SH_RATE, NICK, RANK() OVER(ORDER
+		BY SH_RATE DESC, SH_NUM DESC) as rank FROM shouting)
+		where rank between 1 and 3
+
+	</select>
+
+
+
+	<select id="myWrite" parameterType="java.lang.String" resultType="qa.model.Mw">
+		
+		 select ID, title, daytime 
+		from
+		((select ID, LE_TITLE as title, LE_TIME as daytime from learn)
+		union all
+		(select ID, qa_TITLE as title , qa_TIME as daytime from qa)
+		union all
+		(select ID, ALGO_NAME as title, ALGO_TIME as daytime from algo a, algo_mem am
+		where a.algo_num=am.algo_num)
+		union all
+		(select ID, HIRE_TITLE as title, APLI_DATE as daytime from hire h, applicant
+		a where h.hire_num=a.hire_num))
+    
+    
+    	where id=#{id}
+		order by daytime desc
+	
+		
+
+	</select>
+
+</mapper>

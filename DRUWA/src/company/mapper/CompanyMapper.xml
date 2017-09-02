@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="mybaits.mapper.CompanyMapper">
+	<resultMap type="company" id="CompanyMap">
+		<result column="COMPANY_ID" property="companyId" />
+		<result column="COMPANY_PW" property="companyPw" />
+		<result column="COMPANY_NAME" property="companyName" />
+		<result column="MGR" property="mgr" />
+		<result column="COMPANY_JOB" property="companyJob" />
+		<result column="COMPANY_SALES" property="companySales" />
+		<result column="COMPANY_TYPE" property="companyType" />
+		<result column="SETUP_DATE" property="setupDate" />
+		<result column="TOTAL_MAN" property="totalMan" />
+		<result column="TOTAL_SEL" property="totalSel" />
+		<result column="MONEY" property="money" />
+		<result column="COMPANY_TEL" property="companyTel" />
+		<result column="FAX" property="fax" />
+		<result column="ADDR" property="addr" />
+		<result column="COMPANY_RESUME" property="companyResume" />
+		<result column="COMPANY_INTRO" property="companyIntro" />
+		<result column="COMPANY_DETAIL" property="companyDetail" />
+	</resultMap>
+
+
+	<!-- 회원 삽입 -->
+	<insert id="insertCompany" parameterType="company">
+		INSERT INTO company(COMPANY_ID, COMPANY_PW, COMPANY_NAME, MGR, COMPANY_JOB, COMPANY_SALES, COMPANY_TYPE,SETUP_DATE, TOTAL_MAN, TOTAL_SEL, MONEY,COMPANY_TEL, FAX, ADDR, COMPANY_RESUME,COMPANY_INTRO, COMPANY_DETAIL)
+		values(#{companyId},#{companyPw},#{companyName},#{mgr}, #{companyJob},#{companySales},#{companyType},#{setupDate},#{totalMan},#{totalSel},#{money},#{companyTel},#{fax},#{addr},#{companyResume},#{companyIntro},#{companyDetail})
+	</insert>
+
+	<!-- viewCompany. -->
+	<select id="viewCompany" resultType="company" parameterType="string">
+		select * from company where COMPANY_ID = #{companyId}
+	</select>
+	
+	<!-- 로그인 확인 -->
+	<select id="loginCompany" resultMap="CompanyMap" parameterType="company">
+		SELECT * FROM company where COMPANY_ID=#{companyId} and COMPANY_PW=#{companyPw}
+	</select>
+</mapper>

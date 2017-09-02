@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration 
+PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-config.dtd">
+
+<configuration>
+
+	<!-- 디비 연결 정보(프라러티) 파일 연결 -->
+	<properties resource="dbconnect.properties">
+	</properties>
+
+	<!-- 낙타표기법과 언더바표기법 자동 맞추기 -->
+	<settings>
+		<setting name="mapUnderscoreToCamelCase" value="true" />
+	</settings>
+
+	<!-- VO 클래스들의 별칭 등록 -->
+	<typeAliases>
+		<typeAlias type="apli.model.ApliName" alias="apliName" />
+		<typeAlias type="apli.model.Apli" alias="apli" />
+		<typeAlias type="algo.model.Algo" alias="algo" />
+		<typeAlias type="company.model.Company" alias="company" />
+		<typeAlias type="hire.model.Job" alias="Job" />
+		<typeAlias type="hire.model.Hire" alias="hire" />
+		<typeAlias type="hire.model.Rate" alias="rate" />
+		<typeAlias type="hire.model.Review" alias="review" />
+		<typeAlias type="learn.model.Learn" alias="learn" />
+		<typeAlias type="member.model.Member" alias="member" />
+		<typeAlias type="qa.model.Qa" alias="qa" />
+		<typeAlias type="relearn.model.ReLearn" alias="relearn" />
+	</typeAliases>
+
+	<environments default="development">
+		<environment id="development">
+			<transactionManager type="JDBC" />
+			<dataSource type="POOLED">
+
+				<property name="driver" value="${jdbc.driver}" />
+				<property name="url" value="${jdbc.url}" />
+				<property name="username" value="${jdbc.username}" />
+				<property name="password" value="${jdbc.password}" />
+
+			</dataSource>
+		</environment>
+	</environments>
+
+	<!-- 해당매퍼들을 여기에 등록 -->
+	<mappers>
+		<mapper resource="algo/mapper/AlgoMapper.xml" />
+		<mapper resource="hire/mapper/HireMapper.xml" />
+		<mapper resource="member/mapper/MemberMapper.xml" />
+		<mapper resource="company/mapper/CompanyMapper.xml" />
+		<mapper resource="learn/mapper/LearnMapper.xml" />
+		<mapper resource="qa/mapper/QaMapper.xml" />
+	</mappers>
+</configuration>

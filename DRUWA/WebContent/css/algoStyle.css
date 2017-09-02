@@ -1,0 +1,42 @@
+
+body {
+	font-family: 'Hanna', serif;
+}
+
+h4 {
+	font-size: 25px;
+}
+
+.Algohead {
+	margin:15px;
+	height: 100px;
+	background: #778899 repeat;
+}
+
+.head_article{
+	position: relative;
+	overflow: hidden;
+	color:#FFF;
+	font-size: 50px;
+	text-align: center;
+	line-height:1.9em
+}
+
+.article{
+	 line-height:2.0em;
+}
+
+.quiz {
+	padding:15px;
+	border: 2px dotted SlateGray;
+}
+
+.submitwrite{
+	width:780px;	
+}
+
+.quizanswer {
+	line-height:1.5em; 
+	font-size:15px; 
+	margin:40px;
+}

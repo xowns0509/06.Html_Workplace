@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE mapper     PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"     "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="mybatis.mapper.CommentMapper">
+
+	<resultMap type="comment" id="commentMap">
+		<result column="comment_no" property="commentNo"/>
+		<result column="user_id" property="userId"/>
+		<result column="comment_content" property="commentContent"/>
+		<result column="reg_date" property="regDate"/>
+	</resultMap>
+
+	<!-- 방명록 검색 -->
+	<select id="listComment" resultMap="commentMap"> 
+		select * from comment_tab  
+	</select>
+	
+	<!-- 방명록 입력 -->
+	<insert id="insertComment" parameterType="comment">
+		insert into comment_tab (comment_no, user_id, comment_content, reg_date)
+		values (#{commentNo}, #{userId}, #{commentContent}, sysdate)
+	</insert>
+	
+	<!-- 해당하는 글내용 검색 -->
+	<select id="viewComment" resultType="comment" parameterType="long">
+		select * from comment_tab where comment_no = #{commentNo}
+	</select>
+	
+	<!-- 방명록 삭제 -->
+	<delete id="deleteComment" parameterType="long">
+		delete from comment_tab where comment_no = #{commentNo}
+	</delete>
+	
+	<!-- 방명록 수정 -->
+	<update id="modifyComment" parameterType="comment">
+		update comment_tab set user_id=#{userId}, comment_content=#{commentContent}
+		where comment_no = #{commentNo} 
+	</update>
+</mapper> 

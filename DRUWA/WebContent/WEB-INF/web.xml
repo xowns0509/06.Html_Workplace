@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://xmlns.jcp.org/xml/ns/javaee" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd" id="WebApp_ID" version="3.1">
+	<display-name>DRUWA</display-name>
+
+	<welcome-file-list>
+		<welcome-file>index.html</welcome-file>
+		<welcome-file>index.htm</welcome-file>
+		<welcome-file>index.jsp</welcome-file>
+		<welcome-file>default.html</welcome-file>
+		<welcome-file>default.htm</welcome-file>
+		<welcome-file>default.jsp</welcome-file>
+	</welcome-file-list>
+	<!-- SJ -->
+	<servlet>
+		<servlet-name>LearnControl</servlet-name>
+		<servlet-class>learn.control.LearnControl</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>LearnControl</servlet-name>
+		<url-pattern>/LearnControl</url-pattern>
+	</servlet-mapping>
+
+	<servlet>
+		<servlet-name>MemberControl</servlet-name>
+		<servlet-class>member.control.MemberControl</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>MemberControl</servlet-name>
+		<url-pattern>/MemberControl</url-pattern>
+	</servlet-mapping>
+
+	<servlet>
+		<servlet-name>CompanyControl</servlet-name>
+		<servlet-class>company.control.CompanyControl</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>CompanyControl</servlet-name>
+		<url-pattern>/CompanyControl</url-pattern>
+	</servlet-mapping>
+
+	<servlet>
+		<servlet-name>AlgoControl</servlet-name>
+		<servlet-class>algo.control.AlgoControl</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>AlgoControl</servlet-name>
+		<url-pattern>/AlgoControl</url-pattern>
+	</servlet-mapping>
+
+	<!-- TJ -->
+	<servlet>
+		<servlet-name>HireControl</servlet-name>
+		<servlet-class>hire.control.HireControl</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>HireControl</servlet-name>
+		<url-pattern>/HireControl</url-pattern>
+		<url-pattern>*.tj</url-pattern>
+	</servlet-mapping>
+
+	<!-- DI -->
+	<servlet>
+		<servlet-name>QaControl</servlet-name>
+		<servlet-class>qa.control.QaControl</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>QaControl</servlet-name>
+		<url-pattern>/qa.do</url-pattern>
+	</servlet-mapping>
+
+	<!-- pds servelet setting -->
+	<servlet>
+		<servlet-name>FileUploadServlet</servlet-name>
+		<servlet-class>pds.file.FileUploadServlet</servlet-class>
+		
+		<!-- setting about fileuploading -->
+		<multipart-config>
+			<location>D:\Java_Tools\apache-tomcat-8.0.33\temp</location>
+			<!-- uploadfile temp-location -->
+			<file-size-threshold>1024</file-size-threshold>
+		</multipart-config>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>FileUploadServlet</servlet-name>
+		<url-pattern>/pds</url-pattern>
+	</servlet-mapping>
+
+	<!-- FileUpload basic servlet -->
+	<servlet>
+		<servlet-name>UploadServlet</servlet-name>
+		<servlet-class>fileupload.temp.UploadServlet</servlet-class>
+		
+		<!-- setting about fileuploading -->
+		<multipart-config>
+			<location>D:\Java_Tools\apache-tomcat-8.0.33\temp</location>
+			<!-- uploadfile temp-location -->
+			<file-size-threshold>1024</file-size-threshold>
+		</multipart-config>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>UploadServlet</servlet-name>
+		<url-pattern>/upload</url-pattern>
+	</servlet-mapping>
+
+</web-app>

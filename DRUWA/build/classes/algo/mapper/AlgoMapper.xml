@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="mybaits.mapper.AlgoMapper">
+	<resultMap type="algo" id="algoMap">
+		<id column="ALGO_MEM_NUM" property="algoMemNum" />	
+		<result column="ALGO_NUM" property="algoNum" />	
+		<result column="ID" property="id" />	
+		<result column="ALGO_ANSWER" property="algoAnswer" />	
+		<result column="ALGO_TIME" property="algoTime" />	
+	</resultMap>
+	
+	<!-- 글쓰기 -->
+	<insert id="insertAlgo" parameterType="algo">
+		INSERT INTO algo_mem (ALGO_MEM_NUM,ALGO_NUM,ID,ALGO_ANSWER,ALGO_TIME)
+		values(algo_mem_seq.nextval,#{algoNum},#{id},#{algoAnswer},sysdate)
+	</insert>
+</mapper>

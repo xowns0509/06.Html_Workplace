@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE mapper     PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"     "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="mybatis.mapper.HireMapper">
+
+	<resultMap type="hire" id="HireMap">
+		<result column="HIRE_NUM" property="hireNum" />
+		<result column="COMPANY_ID" property="companyId" />
+		<result column="HIRE_TITLE" property="hireTitle" />
+		<result column="HIRE_MAN" property="hireMan" />
+		<result column="APPLICANT_MAN" property="applicantMan" />
+		<result column="HIRE_JOB" property="hireJob" />
+		<result column="HIRE_LANG" property="hireLang" />
+		<result column="STR_DATE" property="strDate" />
+		<result column="EXP_DATE" property="expDate" />
+		<result column="HIRE_SW" property="hireSw" />
+	</resultMap>
+
+	<resultMap type="review" id="ReviewMap">
+		<result column="REVIEW_NUM" property="reviewNum" />
+		<result column="COMPANY_ID" property="companyId" />
+		<result column="NICK" property="nick" />
+		<result column="REVIEW_TIME" property="reviewTime" />
+		<result column="REVIEW_CONTENT" property="reviewContent" />
+	</resultMap>
+
+	<resultMap type="rate" id="RateMap">
+		<result column="RATE_NUM" property="rateNum" />
+		<result column="COMPANY_ID" property="companyId" />
+		<result column="NICK" property="nick" />
+		<result column="RATE_TIME" property="rateTime" />
+		<result column="RATE_CONTENT" property="rateContent" />
+	</resultMap>
+
+	<resultMap type="job" id="JobMap">
+		<result column="JOB_NUM" property="jobNum" />
+		<result column="JOB_NAME" property="jobName" />
+		<result column="JOB_SUMMARY" property="jobSummary" />
+		<result column="JOB_DETAIL" property="jobDetail" />
+	</resultMap>
+
+	<resultMap type="apli" id="ApliMap">
+		<result column="HIRE_NUM" property="hireNum" />
+		<result column="ID" property="id" />
+		<result column="APLI_LANG" property="apliLang" />
+		<result column="APLI_RESUME" property="apliResume" />
+		<result column="APLI_TEL" property="apliTel" />
+	</resultMap>
+
+	<resultMap type="apliName" id="ApliNameMap">
+		<result column="HIRE_NUM" property="hireNum" />
+		<result column="ID" property="id" />
+		<result column="LANG" property="lang" />
+		<result column="RESUME" property="resume" />
+		<result column="TEL" property="tel" />
+		<result column="NAME" property="name" />
+		<result column="APLI_DATE" property="apliDate" />
+	</resultMap>
+
+	<!-- Top10_HIRE_JOB. where hireJob -->
+	<select id="listHireJob10" resultMap="HireMap" parameterType="string">
+		select * from (select * from HIRE where HIRE_JOB = #{hireJob} and HIRE_SW = 'on' order by APPLICANT_MAN desc) <![CDATA[ where rownum <= 10]]>
+
+	</select>
+
+	<!-- HIRE_JOB List where hireJob -->
+	<select id="listHireJob" resultMap="HireMap" parameterType="string">
+		select * from HIRE where HIRE_JOB = #{hireJob}
+	</select>
+
+	<!-- hireCompanyview. 회사ID로 where절. -->
+	<select id="viewCompanyHire" resultMap="HireMap" parameterType="string">
+		select * from HIRE where COMPANY_ID = #{companyId} order by EXP_DATE desc
+	</select>
+
+	<!-- viewSingleHire. 1개 갖고오는 거. 수정 할 때 필요. -->
+	<select id="viewSingleHire" resultType="hire" parameterType="int">
+		select * from HIRE where HIRE_NUM = #{hireNum}
+	</select>
+
+	<!-- hireinsert -->
+	<insert id="insertHire" parameterType="hire">
+		insert into HIRE (HIRE_NUM, COMPANY_ID, HIRE_TITLE, HIRE_MAN, HIRE_JOB, HIRE_LANG, STR_DATE, EXP_DATE, HIRE_SW)
+		values (HIRE_SEQ.nextval, #{companyId}, #{hireTitle}, #{hireMan}, #{hireJob}, #{hireLang}, sysdate, sysdate, #{hireSw})
+	</insert>
+
+	<!-- hiredelete -->
+	<!-- <delete id="deleteHire" parameterType="int"> -->
+	<!-- delete from HIRE where comment_no = #{commentNo} -->
+	<!-- </delete> -->
+
+	<!-- hireModify -->
+	<!-- <update id="modifyHire" parameterType="hire"> -->
+	<!-- update HIRE set HIRE_TITLE=#{hireTitle}, HIRE_MAN=#{hireMan}, user_id=#{userId}, user_id=#{userId}, user_id=#{userId}, user_id=#{userId}, -->
+	<!-- where HIRE_NUM = #{hireNum} and COMPANY_ID = #{companyId} -->
+	<!-- </update> -->
+
+	<!-- ratelist. -->
+	<select id="listRate" resultMap="RateMap" parameterType="string">
+		select * from COMPANY_RATE where COMPANY_ID = #{companyId} order by RATE_TIME desc
+	</select>
+
+	<!-- reviewlist. -->
+	<select id="listReview" resultMap="ReviewMap" parameterType="string">
+		select * from COMPANY_REVIEW where COMPANY_ID = #{companyId} order by REVIEW_TIME desc
+	</select>
+
+	<!-- rateinsert -->
+	<insert id="insertRate" parameterType="rate">
+		insert into COMPANY_RATE (COMPANY_ID, RATE_NUM, NICK, RATE_TIME, RATE_CONTENT, RATE_PASS)
+		values (#{companyId}, COMPANY_RATE_NUM_SEQ.nextval, #{nick}, sysdate, #{rateContent}, #{ratePass})
+	</insert>
+
+	<!-- reviewinsert -->
+	<insert id="insertReview" parameterType="review">
+		insert into COMPANY_REVIEW (COMPANY_ID, REVIEW_NUM, NICK, REVIEW_TIME, REVIEW_CONTENT, REVIEW_PASS)
+		values (#{companyId}, COMPANY_REVIEW_NUM_SEQ.nextval, #{nick}, sysdate, #{reviewContent}, #{reviewPass})
+	</insert>
+
+	<!-- rateDelete -->
+	<delete id="deleteRate" parameterType="rate">
+		delete from COMPANY_RATE where RATE_NUM = #{rateNum} AND RATE_PASS = #{ratePass}
+	</delete>
+
+	<!-- reviewDelete -->
+	<delete id="deleteReview" parameterType="review">
+		delete from COMPANY_REVIEW where REVIEW_NUM = #{reviewNum} AND REVIEW_PASS = #{reviewPass}
+	</delete>
+
+	<!-- joblist -->
+	<select id="listJob" resultMap="JobMap">
+		select * from JOB
+	</select>
+
+	<!-- jobview -->
+	<select id="viewJob" resultType="job" parameterType="string">
+		select * from JOB where JOB_NAME = #{jobName}
+	</select>
+
+	<!-- listApliByHireNum List where hireJob -->
+	<select id="listApliNameByHireNum" resultMap="ApliNameMap" parameterType="int">
+		select A1.HIRE_NUM as HIRE_NUM, A1.ID as ID, M1.NAME as NAME, A1.APLI_TEL as TEL, A1.APLI_LANG AS LANG, A1.APLI_RESUME as RESUME, A1.APLI_DATE as APLI_DATE
+		from APPLICANT A1, MEMBER M1
+		where A1.ID = M1.ID and HIRE_NUM = #{hireNum}
+	</select>
+
+	<!-- apliInsert -->
+	<insert id="insertApli" parameterType="rate">
+		insert into APPLICANT (HIRE_NUM, ID, APLI_LANG, APLI_RESUME, APLI_TEL, APLI_DATE)
+		values (#{hireNum}, #{id}, #{apliLang}, #{apliResume}, #{apliTel}, sysdate)
+	</insert>
+
+	<!-- apliCount -->
+	<select id="viewApliCount" resultType="int" parameterType="int">
+		SELECT COUNT(*) as count FROM APPLICANT
+		where HIRE_NUM = #{hireNum}
+	</select>
+
+	<!-- hireCountUpdate -->
+	<update id="updateHireCount" parameterType="hire">
+		update HIRE set APPLICANT_MAN = #{applicantMan} where HIRE_NUM = #{hireNum}
+	</update>
+
+</mapper> 

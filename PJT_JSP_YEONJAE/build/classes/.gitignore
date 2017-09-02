@@ -1,0 +1,13 @@
+/board/
+/common/
+/dbconnect.properties
+/guest/
+/info/
+/log4j.xml
+/mbts/
+/member/
+/mvc/
+/mybatis/
+/mybatis-config.xml
+/shop/
+/temp/
